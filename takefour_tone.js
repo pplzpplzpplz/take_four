@@ -11,38 +11,38 @@ const loadprogressDiv = document.querySelector('.loadprogress');
 
 
 // tone.js - new Buffer for audio file, to grab duration
-const buffer1 = new Tone.Buffer("op1.wav");
-const buffer2 = new Tone.Buffer("op2.wav");
-const buffer3 = new Tone.Buffer("op3.wav");
-const buffer4 = new Tone.Buffer("1c.wav");
+const buffer1 = new Tone.Buffer("audio/1bb.wav");
+const buffer2 = new Tone.Buffer("audio/2bb.wav");
+const buffer3 = new Tone.Buffer("audio/3bb.wav");
+const buffer4 = new Tone.Buffer("audio/4bb.wav");
 
-// tone.js effects
-const feedbackDelay = new Tone.FeedbackDelay(10, 0.6).toDestination();
-const pingPong = new Tone.PingPongDelay(.14, 0.1).toDestination();
-const freeverb = new Tone.Freeverb().toDestination();
-const cheby = new Tone.Chebyshev(100).toDestination();
-const pitchShift = new Tone.PitchShift(24).toDestination();
-const autoFilter = new Tone.AutoFilter("2n").toDestination().start();
+// TONE.JS EFFECTS ----------------
+// const feedbackDelay = new Tone.FeedbackDelay(10, 0.6).toDestination();
+// const pingPong = new Tone.PingPongDelay(.14, 0.1).toDestination();
+// const freeverb = new Tone.Freeverb().toDestination();
+// const cheby = new Tone.Chebyshev(100).toDestination();
+// const pitchShift = new Tone.PitchShift(24).toDestination();
+// const autoFilter = new Tone.AutoFilter("2n").toDestination().start();
 
-pitchShift.wet.value = .25;
+// pitchShift.wet.value = .25;
 // pitchShift.pitch.value = -24;
 
-freeverb.dampening = 250;
+// freeverb.dampening = 250;
 
-freeverb.wet.value = 1;
+// freeverb.wet.value = 1;
 
 // setInterval(() => {
 //   freeverb.wet.value = Math.random() * 1;
 // }, 200);
 
-freeverb.roomSize.linearRampToValueAtTime(.5, 4);
+// freeverb.roomSize.linearRampToValueAtTime(.5, 4);
 
 
 
 // players
-const player1 = new Tone.Player(buffer1).connect(cheby).connect(feedbackDelay).connect(pingPong).connect(freeverb).connect(pitchShift).connect(autoFilter).toDestination();
-const player2 = new Tone.Player(buffer2).connect(cheby).connect(feedbackDelay).connect(pingPong).connect(freeverb).connect(pitchShift).connect(autoFilter).toDestination();
-const player3 = new Tone.Player(buffer3).connect(cheby).connect(feedbackDelay).connect(pingPong).connect(freeverb).connect(pitchShift).connect(autoFilter).toDestination();
+const player1 = new Tone.Player(buffer1).toDestination();
+const player2 = new Tone.Player(buffer2).toDestination();
+const player3 = new Tone.Player(buffer3).toDestination();
 const player4 = new Tone.Player(buffer4).toDestination();
 
 
@@ -102,7 +102,10 @@ loadingState();
 
   Tone.loaded().then(() => {
     loadprogressDiv.innerHTML = 'loaded!';
-    setTimeout(() => {loadprogressDiv.innerHTML = ''}, 1000);
+    setTimeout(() => {
+      loadprogressDiv.innerHTML = '';
+      loadprogressDiv.style.display = 'none';
+    }, 1000);
 
     // AUDIO 1 --------------------------------
     // pick a random start time within the duration of the audio file
@@ -111,8 +114,8 @@ loadingState();
     player1.fadeIn = .1;
     player1.fadeOut = .1;
     player1.loop = true;
-    player1.playbackRate = .75;
-    player1.reverse = true;
+    player1.playbackRate = 1;
+    // player1.reverse = true;
     player1.start();
     Tone.Transport.start();
     
@@ -153,8 +156,8 @@ loadingState();
     player2.fadeIn = .1;
     player2.fadeOut = .1;
     player2.loop = true;
-    player2.playbackRate = .75;
-    player2.reverse = true;
+    player2.playbackRate = 1;
+    // player2.reverse = true;
     player2.start();
 
     // seek to the random start position
@@ -182,7 +185,7 @@ loadingState();
     player3.fadeIn = .1;
     player3.fadeOut = .1;
     player3.loop = true;
-    player3.playbackRate = .75;
+    player3.playbackRate = 1;
     // player3.reverse = true;
     player3.start();
 
@@ -211,8 +214,8 @@ loadingState();
     player4.fadeIn = .1;
     player4.fadeOut = .1;
     player4.loop = true;
-    player4.playbackRate = .75;
-    player4.reverse = true;
+    player4.playbackRate = 1;
+    // player4.reverse = true;
     player4.volume.value = -10;
     player4.start();
 
