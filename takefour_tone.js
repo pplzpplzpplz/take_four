@@ -135,15 +135,15 @@ loadingState();
         p1.style.transition = 'none';
       }
 
-      debugDiv.innerHTML = `
-      <strong><u>DEBUG</u></strong> <br>
-      randomStartPosition1:  ${randomStartPosition1.toFixed(1)}
-      <br> 
-      buffer1.duration: ${buffer1.duration} <br>
-      currentPosition1: ${currentPosition1.toFixed(1)}
-      reverb: ${freeverb.wet.value.toFixed(2)} <br>
-      cheby: ${cheby.order.value} <br>
-      `;
+      // debugDiv.innerHTML = `
+      // <strong><u>DEBUG</u></strong> <br>
+      // randomStartPosition1:  ${randomStartPosition1.toFixed(1)}
+      // <br> 
+      // buffer1.duration: ${buffer1.duration} <br>
+      // currentPosition1: ${currentPosition1.toFixed(1)}
+      // reverb: ${freeverb.wet.value.toFixed(2)} <br>
+      // cheby: ${cheby.order.value} <br>
+      // `;
     });
     // AUDIO 1 ----------------END----------------
 
@@ -166,7 +166,11 @@ loadingState();
 
     setInterval(function() {
       // find the current position of the track 
-      let currentPosition2 = (randomStartPosition2 + Tone.Transport.seconds) % buffer2.duration;
+      let currentPosition2 = ((randomStartPosition2 + Tone.Transport.seconds) % buffer2.duration);
+
+      // find new buffer2.duration based on playbackRate
+
+
 
       // move the line with the audio playback
       p2.style.left = `${((currentPosition2 / buffer2.duration) * 100)}%`;
