@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head profile="http://www.w3.org/2005/10/profile">
+  <link rel="shortcut icon" href="/PATH_TO_STATIC_FAVICON/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- meta needed for mq to work -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DIFFERENT EVERY TIME</title>
+
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+
+<body>
+    <h1>TAKE FOUR</h1>
+
+    
+    <h1 class="releaseNo">001</h1>
+    <div class="intro">
+      <p>Each of the four tracks starts at a random position on play, </p>
+    </div>
+    <div class="buttonwrapper">
+      <button class="playstop" data-playing="false" role="switch" aria-checked="false">
+      play / stop
+      </button>
+    </div>
+
+    <div class="downloadprogress">
+      <div class="loadstatus"></div>
+      <br>
+      <div class="loadprogress"></div>
+    </div>
+
+    <div class="debugDiv">
+      <strong><u>DEBUG</u></strong> <br>
+      randomStartPosition:
+      <br> 
+      buffer.duration: <br>
+      currentPosition: 
+    </div>
+
+    <div class="columncontainer">
+      <div class="column">
+        <div class="accordion_area">
+          <div class="progressbar b1">
+            <div class="position p1"></div>
+          </div>
+            <p class="description"> Korg Polysix, Blooper </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="accordion_area">
+          <div class="progressbar b2">
+            <div class="position p2"></div>
+          </div>
+          <p class="description"> Other stuff, hey check it out </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="accordion_area">
+          <div class="progressbar b3">
+            <div class="position p3"></div>
+          </div>
+          <p class="description"> Lalalala music sounds </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="accordion_area">
+          <div class="progressbar b4">
+            <div class="position p4"></div>
+          </div>
+          <p class="description"> Boop boop boop boop </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Tone.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="takefour_tone.js"></script>
+</body>
+
+</html>
