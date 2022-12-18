@@ -1,5 +1,3 @@
-// const { Chebyshev } = require("tone");
-
 let audioContext = new AudioContext();
 const playStopButton = document.querySelector('.playstop');
 const debugDiv = document.querySelector('.debugDiv');
@@ -9,60 +7,16 @@ const p3 = document.querySelector('.p3');
 const p4 = document.querySelector('.p4');
 const loadprogressDiv = document.querySelector('.loadprogress');
 
-
-// tone.js - new Buffer for audio file, to grab duration
 const buffer1 = new Tone.Buffer("audio/1bb.wav");
 const buffer2 = new Tone.Buffer("audio/2bb.wav");
 const buffer3 = new Tone.Buffer("audio/3bb.wav");
 const buffer4 = new Tone.Buffer("audio/4bb.wav");
-
-// TONE.JS EFFECTS ----------------
-// const feedbackDelay = new Tone.FeedbackDelay(10, 0.6).toDestination();
-// const pingPong = new Tone.PingPongDelay(.14, 0.1).toDestination();
-// const freeverb = new Tone.Freeverb().toDestination();
-// const cheby = new Tone.Chebyshev(100).toDestination();
-// const pitchShift = new Tone.PitchShift(24).toDestination();
-// const autoFilter = new Tone.AutoFilter("2n").toDestination().start();
-
-// pitchShift.wet.value = .25;
-// pitchShift.pitch.value = -24;
-
-// freeverb.dampening = 250;
-
-// freeverb.wet.value = 1;
-
-// setInterval(() => {
-//   freeverb.wet.value = Math.random() * 1;
-// }, 200);
-
-// freeverb.roomSize.linearRampToValueAtTime(.5, 4);
-
-
 
 // players
 const player1 = new Tone.Player(buffer1).toDestination();
 const player2 = new Tone.Player(buffer2).toDestination();
 const player3 = new Tone.Player(buffer3).toDestination();
 const player4 = new Tone.Player(buffer4).toDestination();
-
-
-
-
-
-// TO DO - TO EXPLORE 
-// reverse
-// playbackRate
-// feedbackdelay = p cool
-// autoFilter - meh
-
-
-
-
-
-
-
-
-
 
 playStopButton.addEventListener('click', function() {
   // PLAY OR STOP track depending on state
@@ -73,11 +27,8 @@ playStopButton.addEventListener('click', function() {
     this.dataset.playing = 'true';
 
   } else if (this.dataset.playing === 'true') {
-    // STOP MUSIC
-    location.reload(); // cant get the playCount1 to reset, so using page reload here
-    // stopIt();
-    // console.log('stopped');
-    // this.dataset.playing = 'false';
+    // STOP MUSIC (reload page)
+    location.reload();
   }
 }, false);
 
@@ -107,7 +58,7 @@ loadingState();
       loadprogressDiv.style.display = 'none';
     }, 1000);
 
-    // AUDIO 1 --------------------------------
+    // AUDIO 1 ------------START--------------------
     // pick a random start time within the duration of the audio file
     randomStartPosition1 = Math.random() * buffer1.duration;
     
@@ -115,11 +66,9 @@ loadingState();
     player1.fadeOut = .1;
     player1.loop = true;
     player1.playbackRate = 1;
-    // player1.reverse = true;
     player1.start();
     Tone.Transport.start();
     
-
     // seek to the random start position
     player1.seek(randomStartPosition1);    
 
@@ -135,21 +84,12 @@ loadingState();
         p1.style.transition = 'none';
       }
 
-      // debugDiv.innerHTML = `
-      // <strong><u>DEBUG</u></strong> <br>
-      // randomStartPosition1:  ${randomStartPosition1.toFixed(1)}
-      // <br> 
-      // buffer1.duration: ${buffer1.duration} <br>
-      // currentPosition1: ${currentPosition1.toFixed(1)}
-      // reverb: ${freeverb.wet.value.toFixed(2)} <br>
-      // cheby: ${cheby.order.value} <br>
-      // `;
     });
     // AUDIO 1 ----------------END----------------
 
 
 
-    // AUDIO 2 --------------------------------
+    // AUDIO 2 ------------START--------------------
     // pick a random start time within the duration of the audio file
     randomStartPosition2 = Math.random() * buffer2.duration;
     
@@ -157,7 +97,6 @@ loadingState();
     player2.fadeOut = .1;
     player2.loop = true;
     player2.playbackRate = 1;
-    // player2.reverse = true;
     player2.start();
 
     // seek to the random start position
@@ -167,10 +106,6 @@ loadingState();
     setInterval(function() {
       // find the current position of the track 
       let currentPosition2 = ((randomStartPosition2 + Tone.Transport.seconds) % buffer2.duration);
-
-      // find new buffer2.duration based on playbackRate
-
-
 
       // move the line with the audio playback
       p2.style.left = `${((currentPosition2 / buffer2.duration) * 100)}%`;
@@ -182,7 +117,7 @@ loadingState();
     // AUDIO 2 ----------------END----------------
 
 
-    // AUDIO 3 --------------------------------
+    // AUDIO 3 ------------START--------------------
     // pick a random start time within the duration of the audio file
     randomStartPosition3 = Math.random() * buffer3.duration;
     
@@ -190,7 +125,6 @@ loadingState();
     player3.fadeOut = .1;
     player3.loop = true;
     player3.playbackRate = 1;
-    // player3.reverse = true;
     player3.start();
 
     // seek to the random start position
@@ -210,8 +144,7 @@ loadingState();
     });
     // AUDIO 3 ----------------END----------------
 
-
-    // AUDIO 4 --------------------------------
+    // AUDIO 4 ------------START--------------------
     // pick a random start time within the duration of the audio file
     randomStartPosition4 = Math.random() * buffer4.duration;
     
@@ -219,13 +152,11 @@ loadingState();
     player4.fadeOut = .1;
     player4.loop = true;
     player4.playbackRate = 1;
-    // player4.reverse = true;
     player4.volume.value = -10;
     player4.start();
 
     // seek to the random start position
     player4.seek(randomStartPosition4);
-
 
     setInterval(function() {
       // find the current position of the track 
@@ -239,10 +170,6 @@ loadingState();
       }
     });
     // AUDIO 4 ----------------END----------------
-
-
-
-
   });
 }
 
