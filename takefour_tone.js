@@ -13,43 +13,28 @@ const buffer3 = new Tone.Buffer("audio/3bb.wav");
 const buffer4 = new Tone.Buffer("audio/4bb.wav");
 
 // players
-const player1 = new Tone.Player(buffer1).toDestination();
-const player2 = new Tone.Player(buffer2).toDestination();
-const player3 = new Tone.Player(buffer3).toDestination();
-const player4 = new Tone.Player(buffer4).toDestination();
+const players = [
+  new Tone.Player(buffer1).toDestination(),  
+  new Tone.Player(buffer2).toDestination(),  
+  new Tone.Player(buffer3).toDestination(),  
+  new Tone.Player(buffer4).toDestination()
+];
 
 playStopButton.addEventListener('click', function() {
-  // PLAY OR STOP track depending on state
-  if (this.dataset.playing === 'false') {
-    // START MUSIC
-    startIt();
-    console.log('playing');
-    this.dataset.playing = 'true';
-
-  } else if (this.dataset.playing === 'true') {
-    // STOP MUSIC (reload page)
-    location.reload();
-  }
+  this.dataset.playing === 'false' ? startIt() : stopIt();
 }, false);
-
 
 function startIt() {
   loadprogressDiv.innerHTML = 'loading...';
 
   function loadingState() {
-    setInterval(function() {
-    if (loadprogressDiv.innerHTML === 'loading...') {
-      loadprogressDiv.innerHTML = 'loading.';
-    } else if (loadprogressDiv.innerHTML === 'loading.') {
-      loadprogressDiv.innerHTML = 'loading..';
-    } else if (loadprogressDiv.innerHTML === 'loading..') {
-      loadprogressDiv.innerHTML = 'loading...';
-    }
-  }, 500);
+    setInterval(() => {
+      const dots = loadprogressDiv.innerHTML.split('.').length - 1;
+      loadprogressDiv.innerHTML = 'loading' + '.'.repeat(dots % 3 + 1);
+    }, 500);
 }
 
 loadingState();
-
 
   Tone.loaded().then(() => {
     loadprogressDiv.innerHTML = 'loaded!';
@@ -58,127 +43,48 @@ loadingState();
       loadprogressDiv.style.display = 'none';
     }, 1000);
 
-    // AUDIO 1 ------------START--------------------
-    // pick a random start time within the duration of the audio file
-    randomStartPosition1 = Math.random() * buffer1.duration;
-    
-    player1.fadeIn = .1;
-    player1.fadeOut = .1;
-    player1.loop = true;
-    player1.playbackRate = 1;
-    player1.start();
-    Tone.Transport.start();
-    
-    // seek to the random start position
-    player1.seek(randomStartPosition1);    
+    const ps = [p1, p2, p3, p4];
+    const buffers = [buffer1, buffer2, buffer3, buffer4];
 
-    setInterval(function() {
-      // find the current position of the track 
-      let currentPosition1 = (randomStartPosition1 + Tone.Transport.seconds) % buffer1.duration;
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      const p = ps[i];
+      const buffer = buffers[i];
 
-      // move the line with the audio playback
-      p1.style.left = `${((currentPosition1 / buffer1.duration) * 100)}%`;
+      // pick a random start time within the duration of the audio file
+      const randomStartPosition = Math.random() * buffer.duration;
 
-      // turn off transition so it jumps right back to 0 immediately
-      if (currentPosition1 >= buffer1.duration -.01) {
-        p1.style.transition = 'none';
-      }
+      player.fadeIn = 0.1;
+      player.fadeOut = 0.1;
+      player.loop = true;
+      player.playbackRate = 1;
+      player.start();
+      Tone.Transport.start();
 
-    });
-    // AUDIO 1 ----------------END----------------
+      // seek to the random start position
+      player.seek(randomStartPosition);
 
+      setInterval(() => {
+        // find the current position of the track 
+        const currentPosition = (randomStartPosition + Tone.Transport.seconds) % buffer.duration;
 
-
-    // AUDIO 2 ------------START--------------------
-    // pick a random start time within the duration of the audio file
-    randomStartPosition2 = Math.random() * buffer2.duration;
-    
-    player2.fadeIn = .1;
-    player2.fadeOut = .1;
-    player2.loop = true;
-    player2.playbackRate = 1;
-    player2.start();
-
-    // seek to the random start position
-    player2.seek(randomStartPosition2);
-
-
-    setInterval(function() {
-      // find the current position of the track 
-      let currentPosition2 = ((randomStartPosition2 + Tone.Transport.seconds) % buffer2.duration);
-
-      // move the line with the audio playback
-      p2.style.left = `${((currentPosition2 / buffer2.duration) * 100)}%`;
-      // turn off transition so it jumps right back to 0 immediately
-      if (currentPosition2 >= buffer2.duration -.01) {
-        p2.style.transition = 'none';
-      }
-    });
-    // AUDIO 2 ----------------END----------------
-
-
-    // AUDIO 3 ------------START--------------------
-    // pick a random start time within the duration of the audio file
-    randomStartPosition3 = Math.random() * buffer3.duration;
-    
-    player3.fadeIn = .1;
-    player3.fadeOut = .1;
-    player3.loop = true;
-    player3.playbackRate = 1;
-    player3.start();
-
-    // seek to the random start position
-    player3.seek(randomStartPosition3);
-
-
-    setInterval(function() {
-      // find the current position of the track 
-      let currentPosition3 = (randomStartPosition3 + Tone.Transport.seconds) % buffer3.duration;
-
-      // move the line with the audio playback
-      p3.style.left = `${((currentPosition3 / buffer3.duration) * 100)}%`;
-      // turn off transition so it jumps right back to 0 immediately
-      if (currentPosition3 >= buffer3.duration -.01) {
-        p3.style.transition = 'none';
-      }
-    });
-    // AUDIO 3 ----------------END----------------
-
-    // AUDIO 4 ------------START--------------------
-    // pick a random start time within the duration of the audio file
-    randomStartPosition4 = Math.random() * buffer4.duration;
-    
-    player4.fadeIn = .1;
-    player4.fadeOut = .1;
-    player4.loop = true;
-    player4.playbackRate = 1;
-    player4.volume.value = -10;
-    player4.start();
-
-    // seek to the random start position
-    player4.seek(randomStartPosition4);
-
-    setInterval(function() {
-      // find the current position of the track 
-      let currentPosition4 = (randomStartPosition4 + Tone.Transport.seconds) % buffer4.duration;
-
-      // move the line with the audio playback
-      p4.style.left = `${((currentPosition4 / buffer4.duration) * 100)}%`;
-      // turn off transition so it jumps right back to 0 immediately
-      if (currentPosition4 >= buffer4.duration -.01) {
-        p4.style.transition = 'none';
-      }
-    });
-    // AUDIO 4 ----------------END----------------
+        // move the line with the audio playback
+        p.style.left = `${((currentPosition / buffer.duration) * 100)}%`;
+        // turn off transition so it jumps right back to 0 immediately
+        if (currentPosition >= buffer.duration - 0.01) {
+          p.style.transition = 'none';
+        }
+      });
+    }
   });
 }
 
 function stopIt() {
-  player1.stop();
-  Tone.Transport.stop();
-  Tone.Transport.seconds = 0;
-  randomStartPosition1 = 0;
-  player1.seek(0);
+  // for (let i = 0; i < players.length; i++) {
+  //   const player = players[i];
+  //   player.stop();
+  // }
+  location.reload();
 }
 
 
