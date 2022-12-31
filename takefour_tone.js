@@ -5,6 +5,7 @@ const p1 = document.querySelector('.p1');
 const p2 = document.querySelector('.p2');
 const p3 = document.querySelector('.p3');
 const p4 = document.querySelector('.p4');
+const ps = [p1, p2, p3, p4];
 const loadprogressDiv = document.querySelector('.loadprogress');
 
 const buffer1 = new Tone.Buffer("audio/1bb.wav");
@@ -14,13 +15,15 @@ const buffer4 = new Tone.Buffer("audio/4bb.wav");
 
 // players
 const players = [
-  new Tone.Player(buffer1).toDestination(),  
-  new Tone.Player(buffer2).toDestination(),  
-  new Tone.Player(buffer3).toDestination(),  
+  new Tone.Player(buffer1).toDestination(),
+  new Tone.Player(buffer2).toDestination(),
+  new Tone.Player(buffer3).toDestination(),
   new Tone.Player(buffer4).toDestination()
 ];
 
-playStopButton.addEventListener('click', function() {
+let interval;
+
+playStopButton.addEventListener('click', function () {
   if (this.dataset.playing === 'false') {
     startIt();
     this.dataset.playing = 'true';
@@ -38,9 +41,9 @@ function startIt() {
       const dots = loadprogressDiv.innerHTML.split('.').length - 1;
       loadprogressDiv.innerHTML = 'loading' + '.'.repeat(dots % 3 + 1);
     }, 500);
-}
+  }
 
-loadingState();
+  loadingState();
 
   Tone.loaded().then(() => {
     loadprogressDiv.innerHTML = 'loaded!';
@@ -49,7 +52,6 @@ loadingState();
       loadprogressDiv.style.display = 'none';
     }, 1000);
 
-    const ps = [p1, p2, p3, p4];
     const buffers = [buffer1, buffer2, buffer3, buffer4];
 
     for (let i = 0; i < players.length; i++) {
@@ -70,10 +72,11 @@ loadingState();
       // seek to the random start position
       player.seek(randomStartPosition);
 
-      setInterval(() => {
+      // create a separate interval for each player
+      const playerInterval = setInterval(() => {
         // find the current position of the track 
         const currentPosition = (randomStartPosition + Tone.Transport.seconds) % buffer.duration;
-
+      
         // move the line with the audio playback
         p.style.left = `${((currentPosition / buffer.duration) * 100)}%`;
         // turn off transition so it jumps right back to 0 immediately
@@ -81,13 +84,36 @@ loadingState();
           p.style.transition = 'none';
         }
       });
+
+      // store the player interval in a property on the player object
+      player.interval = playerInterval;
     }
   });
 }
 
 function stopIt() {
-  location.reload();
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i];
+    const p = ps[i];
+  
+    // clear the player's interval using the player's interval property
+    clearInterval(player.interval);
+  
+    // reset the player
+    player.seek(0);
+    player.playbackRate = 1;
+  
+    // reset the player's visual position
+    p.style.left = 0;
+  }
+  
+  // stop all players
+  players.forEach(player => player.stop());
+  // stop the transport
+  Tone.Transport.stop();
+  
+  // reset the transport
+  Tone.Transport.seconds = 0;
+  Tone.Transport.bpm.value = 120;
+
 }
-
-
-
