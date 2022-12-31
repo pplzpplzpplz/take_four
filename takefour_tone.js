@@ -21,7 +21,13 @@ const players = [
 ];
 
 playStopButton.addEventListener('click', function() {
-  this.dataset.playing === 'false' ? startIt() : stopIt();
+  if (this.dataset.playing === 'false') {
+    startIt();
+    this.dataset.playing = 'true';
+  } else {
+    stopIt();
+    this.dataset.playing = 'false';
+  }
 }, false);
 
 function startIt() {
@@ -80,10 +86,6 @@ loadingState();
 }
 
 function stopIt() {
-  // for (let i = 0; i < players.length; i++) {
-  //   const player = players[i];
-  //   player.stop();
-  // }
   location.reload();
 }
 
